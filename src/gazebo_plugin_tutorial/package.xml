@@ -1,0 +1,15 @@
+<package>
+  <name>gazebo_plugin_tutorial</name>
+  <version>2.5.8</version>
+
+  <description>gazebo plugin tutorial</description>
+  <license>GNU</license>
+  <maintainer email="shimizu@sist.chukyo-u.ac.jp">Masaru Shimizu</maintainer>
+  
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <run_depend>gazebo_msgs</run_depend>
+  <run_depend>geometry_msgs</run_depend>
+  <run_depend>libgazebo7-dev</run_depend>
+
+</package>
