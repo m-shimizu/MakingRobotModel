@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<sdf version="1.5">
+  <world name="default">
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <model name="box1">
+      <link name="box1">
+      <pose>1 1 0.5 0 0 0</pose>
+        <visual name="v1">
+          <geometry>
+            <box><size>1 1 1</size></box>
+          </geometry>
+        </visual>
+        <collision name="c1">
+          <geometry>
+            <box><size>1 1 1</size></box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+
+    <include>
+      <pose>0 0 0 0 0 0</pose>
+      <uri>model://t1_robot</uri>
+    </include>
+  </world>
+</sdf>
