@@ -14,6 +14,9 @@ Description of making a robot in gazebo
         1-6. Inertial definition   
 
     2. Create a plugin  
+        2-0. install additional packages  
+             sudo apt-get install -y cmake g++ protobuf-compiler pavucontrol libgazebo7 libgazebo7-dev ros-kinetic-desktop ros-kinetic-gazebo-ros-pkgs ros-kinetic-gazebo-ros-control ros-kinetic-ros-control ros-kinetic-ros-controllers ros-kinetic-image-view2 ros-kinetic-rqt ros-kinetic-rqt-common-plugins ros-kinetic-joy ros-kinetic-teleop-twist-keyboard ros-kinetic-message-to-tf ros-kinetic-tf2-geometry-msgs ros-kinetic-audio-common  
+             setup_ros  
         2-1. \<plugin\> in SDF  
         2-2. CMakeLists.txt  
         2-3. cpp file and header file  
