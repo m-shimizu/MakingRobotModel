@@ -21,6 +21,8 @@ Description of making a robot in gazebo
         2-2. CMakeLists.txt  
         2-3. cpp file and header file  
         2-4. build  
+        2-5. velocity control
+        2-6. position(angle) conttol
 
     3. Create a teleoperation controller  
         3-1. CMakeLists.txt  
