@@ -1,6 +1,6 @@
 #cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 cmake_minimum_required(VERSION 2.8.3)
-project(crawler_plugin_and_controller)
+#project(crawler_plugin_and_controller)
 
 ################################################
 # Find System files
