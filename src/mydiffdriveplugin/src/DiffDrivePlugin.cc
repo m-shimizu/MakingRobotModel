@@ -49,16 +49,16 @@ void DiffDrivePlugin::Load(physics::ModelPtr _model,
   if (!_sdf->HasElement("right_joint"))
     gzerr << "DiffDrive plugin missing <right_joint> element\n";
 
-//  if (!_sdf->HasElement("sholder_joint"))
-//    gzerr << "DiffDrive plugin missing <sholder_joint> element\n";
+  if (!_sdf->HasElement("sholder_joint"))
+    gzerr << "DiffDrive plugin missing <sholder_joint> element\n";
 
   this->leftJoint = _model->GetJoint(
       _sdf->GetElement("left_joint")->Get<std::string>());
   this->rightJoint = _model->GetJoint(
       _sdf->GetElement("right_joint")->Get<std::string>());
 
-//  this->sholderJoint = _model->GetJoint(
-//      _sdf->GetElement("sholder_joint")->Get<std::string>());
+  this->sholderJoint = _model->GetJoint(
+      _sdf->GetElement("sholder_joint")->Get<std::string>());
 
   if (_sdf->HasElement("torque"))
   {
