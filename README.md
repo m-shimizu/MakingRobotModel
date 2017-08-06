@@ -2,7 +2,7 @@ __Gazebo quick learning__
 # Making a Robot Model in Gazebo  
 Description of making a robot in gazebo  
 
-#0. Overview
+##0. Overview
 
     1. Create a model  
         1-1. About SDF format  
