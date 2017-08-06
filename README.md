@@ -1,9 +1,8 @@
+__Gazebo quick learning__  
 # Making a Robot Model in Gazebo  
 Description of making a robot in gazebo  
 
-## Gazebo quick learning
-
-0. Overview
+#0. Overview
 
     1. Create a model  
         1-1. About SDF format  
@@ -29,3 +28,17 @@ Description of making a robot in gazebo
         3-2. cpp file and header file  
         3-3. build  
         3-4. Using the teleoperation controller   
+
+##1. Create a model  
+
+###1-1. About SDF format  
+
+###1-2. Primitive model creation  
+
+###1-3. Polygon model creation  
+
+###1-4. Joint definition  
+
+###1-5. Friction definition  
+
+###1-6. Inertial definition 
