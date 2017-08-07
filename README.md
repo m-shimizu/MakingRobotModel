@@ -37,6 +37,7 @@ Description of rupidly making a robot in gazebo with a model plugin and a contro
 * [Make a mobile robot](http://gazebosim.org/tutorials?tut=build_robot)  
 * SDF VERSION = 1.5 or higher  
 * MODEL NAME = FOLDER NAME  
+* \<pose\>x y z roll pich yaw\<\/pose\>
 
 ### 1-3. Polygon model creation  
 
