@@ -30,8 +30,11 @@ Description of rupidly making a robot in gazebo with a model plugin and a contro
 ## 1. Create a model  
 
 ### 1-1. About SDF format  
+* [Make a mobile robot](http://gazebosim.org/tutorials?tut=build_robot)
+* [Specification SDF](http://sdformat.org/spec?elem=geometry&ver=1.5)
 
 ### 1-2. Primitive model creation  
+* [Make a mobile robot](http://gazebosim.org/tutorials?tut=build_robot)
 
 ### 1-3. Polygon model creation  
 
