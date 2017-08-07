@@ -38,6 +38,7 @@ Description of rupidly making a robot in gazebo with a model plugin and a contro
 * SDF VERSION = 1.5 or higher  
 * MODEL NAME = FOLDER NAME  
 * \<pose\>x y z roll pich yaw\<\/pose\>
+* name should be unique
 
 ### 1-3. Polygon model creation  
 
