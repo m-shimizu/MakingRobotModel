@@ -39,6 +39,8 @@ Description of rupidly making a robot in gazebo with a model plugin and a contro
 * MODEL NAME = FOLDER NAME  
 * \<pose\>x y z roll pich yaw\<\/pose\>
 * name should be unique
+* \<pose\> under \<link\> moves whole objects in the link
+* \<pose\> under \<visual\> and \<collision\> moves a object in the visual and the collision
 
 ### 1-3. Polygon model creation  
 
