@@ -61,10 +61,11 @@ void DiffDrivePlugin::Load(physics::ModelPtr _model,
 
   if (!_sdf->HasElement("sholder_joint"))
     gzerr << "DiffDrive plugin missing <sholder_joint> element\n";
-
-
   this->sholderJoint = _model->GetJoint(
       _sdf->GetElement("sholder_joint")->Get<std::string>());
+  if (!this->rightJoint)
+    gzerr << "Unable to find sholder joint["
+          << _sdf->GetElement("sholder_joint")->Get<std::string>() << "]\n";
 
   if (_sdf->HasElement("torque"))
   {
