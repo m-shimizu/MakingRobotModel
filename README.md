@@ -75,18 +75,18 @@ Description of rupidly making a robot in gazebo with a model plugin and a contro
 * [Inertial parameters of triangle meshes](http://gazebosim.org/tutorials?tut=inertia)
 
 ```xml
-   <inertial>
-    <pose>0.1259255 0.250 0.0012545 0 0 0</pose>
-    <mass>10</mass>
-    <inertia>
-      <ixx>5.798e-6</ixx>
-      <ixy>-1.577e5</ixy>
-      <ixz>-5.188e4</ixz>
-      <iyy>3.72e-6</iyy>
-      <iyz>-1946203007.5e-6</iyz>
-      <izz>6.26978e-6</izz>
-    </inertia>
-  </inertial>
+    <inertial>
+      <pose>0.1259255 0.250 0.0012545 0 0 0</pose>
+      <mass>10</mass>
+      <inertia>
+        <ixx>5.798e-6</ixx>
+        <ixy>-1.577e5</ixy>
+        <ixz>-5.188e4</ixz>
+        <iyy>3.72e-6</iyy>
+        <iyz>-1946203007.5e-6</iyz>
+        <izz>6.26978e-6</izz>
+      </inertia>
+    </inertial>
 ```
 
 # 2. Create a plugin  
@@ -96,15 +96,36 @@ Description of rupidly making a robot in gazebo with a model plugin and a contro
 
 ## 2-1. \<plugin\> in SDF  
 
+```xml  
+  <plugin name="robotmoving" filename="libMyDiffDrivePlugin.so">
+    <left_joint>left_wheel_hinge</left_joint>
+    <right_joint>right_wheel_hinge</right_joint>
+    <sholder_joint>sholder_hinge</sholder_joint>
+  </plugin>
+```  
+
 ## 2-2. CMakeLists.txt  
+
+```cmake
+    add_library(PLUGINAME SHARED src/SOURCEFILENAME.cc)
+    target_link_libraries(PLUGINAME ${GAZEBO_LIBRARIES})
+```
 
 ## 2-3. cpp file and header file  
 * [Plugins101](http://gazebosim.org/tutorials/?tut=plugins_hello_world)  
 
-
 ## 2-4. build  
+Just do following commands.  
+
+    $ cd ~/MakingRobotModel
+    $ catkin_make
 
 ## 2-5. velocity control
+
+```c
+		this->leftJoint->SetVelocity(0, left_v);
+		this->rightJoint->SetVelocity(0, right_v);
+```
 
 ## 2-6. position(angle) conttol
 
