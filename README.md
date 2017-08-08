@@ -46,10 +46,12 @@ Description of rupidly making a robot in gazebo with a model plugin and a contro
 ### 1-3. Polygon model creation  
 * [Using a polygon](http://gazebosim.org/tutorials/?tut=attach_meshes)  
 
+```xml
         <mesh>
           <uri>model://pioneer2dx/meshes/chassis.dae</uri>
           <scale>0.9 0.5 0.5</scale>
         </mesh>
+```
 
 ### 1-4. Joint definition  
 
@@ -97,6 +99,8 @@ Description of rupidly making a robot in gazebo with a model plugin and a contro
 ## 2-2. CMakeLists.txt  
 
 ## 2-3. cpp file and header file  
+* [Plugins101](http://gazebosim.org/tutorials/?tut=plugins_hello_world)  
+
 
 ## 2-4. build  
 

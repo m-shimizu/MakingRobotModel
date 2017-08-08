@@ -45,17 +45,23 @@ void DiffDrivePlugin::Load(physics::ModelPtr _model,
 
   if (!_sdf->HasElement("left_joint"))
     gzerr << "DiffDrive plugin missing <left_joint> element\n";
+  this->leftJoint = _model->GetJoint(
+      _sdf->GetElement("left_joint")->Get<std::string>());
+  if (!this->leftJoint)
+    gzerr << "Unable to find left joint["
+          << _sdf->GetElement("left_joint")->Get<std::string>() << "]\n";
 
   if (!_sdf->HasElement("right_joint"))
     gzerr << "DiffDrive plugin missing <right_joint> element\n";
+  this->rightJoint = _model->GetJoint(
+      _sdf->GetElement("right_joint")->Get<std::string>());
+  if (!this->rightJoint)
+    gzerr << "Unable to find right joint["
+          << _sdf->GetElement("right_joint")->Get<std::string>() << "]\n";
 
   if (!_sdf->HasElement("sholder_joint"))
     gzerr << "DiffDrive plugin missing <sholder_joint> element\n";
 
-  this->leftJoint = _model->GetJoint(
-      _sdf->GetElement("left_joint")->Get<std::string>());
-  this->rightJoint = _model->GetJoint(
-      _sdf->GetElement("right_joint")->Get<std::string>());
 
   this->sholderJoint = _model->GetJoint(
       _sdf->GetElement("sholder_joint")->Get<std::string>());
@@ -67,13 +73,6 @@ void DiffDrivePlugin::Load(physics::ModelPtr _model,
            << "and the torque tag is no longer used in this plugin."
            << std::endl;
   }
-
-  if (!this->leftJoint)
-    gzerr << "Unable to find left joint["
-          << _sdf->GetElement("left_joint")->Get<std::string>() << "]\n";
-  if (!this->rightJoint)
-    gzerr << "Unable to find right joint["
-          << _sdf->GetElement("right_joint")->Get<std::string>() << "]\n";
 
   this->updateConnection = event::Events::ConnectWorldUpdateBegin(
           boost::bind(&DiffDrivePlugin::OnUpdate, this));
