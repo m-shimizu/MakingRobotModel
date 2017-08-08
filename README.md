@@ -14,7 +14,7 @@ Description of rupidly making a robot in gazebo with a model plugin and a contro
 
     2. Create a plugin  
         2-0. install additional packages  
-        2-1. \<plugin\> in SDF  
+        2-1. <plugin> in SDF  
         2-2. CMakeLists.txt  
         2-3. cpp file and header file  
         2-4. build  
@@ -44,12 +44,48 @@ Description of rupidly making a robot in gazebo with a model plugin and a contro
 * In \<joint\>, joint posision and joint vector should be defined in a child model coordinate without \<pose\> under child model's \<link\>
 
 ### 1-3. Polygon model creation  
+* [Using a polygon](http://gazebosim.org/tutorials/?tut=attach_meshes)  
+
+        <mesh>
+          <uri>model://pioneer2dx/meshes/chassis.dae</uri>
+          <scale>0.9 0.5 0.5</scale>
+        </mesh>
 
 ### 1-4. Joint definition  
 
 ### 1-5. Friction definition  
+* In \<collision\> element, you can add following lines.  
+
+```xml
+          <surface>
+            <friction>
+              <ode>
+                <mu>0</mu>
+                <mu2>0</mu2>
+                <slip1>1.0</slip1>
+                <slip2>1.0</slip2>
+              </ode>
+            </friction>
+          </surface>
+```
 
 ### 1-6. Inertial definition 
+* [Inertial parameters of triangle meshes](http://gazebosim.org/tutorials?tut=inertia)
+
+```xml
+   <inertial>
+    <pose>0.1259255 0.250 0.0012545 0 0 0</pose>
+    <mass>10</mass>
+    <inertia>
+      <ixx>5.798e-6</ixx>
+      <ixy>-1.577e5</ixy>
+      <ixz>-5.188e4</ixz>
+      <iyy>3.72e-6</iyy>
+      <iyz>-1946203007.5e-6</iyz>
+      <izz>6.26978e-6</izz>
+    </inertia>
+  </inertial>
+```
 
 # 2. Create a plugin  
 ## 2-0. install additional packages  

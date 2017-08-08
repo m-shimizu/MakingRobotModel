@@ -5,20 +5,21 @@
         
         <link name='chassis'>
           <pose>0 0 .1 0 0 0</pose>
-<!--          
+
+<!--        
    <inertial>
     <pose>0.1259255 0.250 0.0012545 0 0 0</pose>
     <mass>10</mass>
     <inertia>
-      <ixx>5.798</ixx>
-      <ixy>-1.577e11</ixy>
-      <ixz>-5.188e10</ixz>
-      <iyy>3.72</iyy>
-      <iyz>-1946203007.5</iyz>
-      <izz>6.26978</izz>
+      <ixx>5.798e-6</ixx>
+      <ixy>-1.577e5</ixy>
+      <ixz>-5.188e4</ixz>
+      <iyy>3.72e-6</iyy>
+      <iyz>-1946203007.5e-6</iyz>
+      <izz>6.26978e-6</izz>
     </inertia>
   </inertial>
--->   
+-->
           
           <collision name='collision'>
             <geometry>
