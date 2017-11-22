@@ -19,7 +19,7 @@ Description of rupidly making a robot in gazebo with a model plugin and a contro
         2-3. cpp file and header file  
         2-4. build  
         2-5. velocity control
-        2-6. position(angle) conttol
+        2-6. position(angle) control
 
     3. Create a teleoperation controller  
         3-1. CMakeLists.txt  
@@ -127,7 +127,32 @@ Just do following commands.
 		this->rightJoint->SetVelocity(0, right_v);
 ```
 
-## 2-6. position(angle) conttol
+## 2-6. position(angle) control
+See also [JointController](http://osrf-distributions.s3.amazonaws.com/gazebo/api/dev/classgazebo_1_1physics_1_1JointController.html).  
+Torques fitted power and direction calculated by each moment should be set.  
+Seting nice torque is very effective to stop vibration of motion.  
+
+__PREPARE A ARM MODEL USING following codes__  
+
+```c
+    float leftTargetAngle = 0, rightTargetAngle = 0;
+    float leftP = leftTargetAngle - this->leftJoint->GetAngle(0).Radian(),
+          rightP = rightTargetAngle - this->rightJoint->GetAngle(0).Radian();
+    leftP *= 10;
+    rightP *= 10;
+    // Set nice torque.  
+    this->leftJoint->SetForce(0, leftP);
+    this->rightJoint->SetForce(0, rightP);
+    // Set PID parameters.  
+    this->model->GetJointController()->SetPositionPID(this->leftJoint->GetScopedName(), common::PID(1, 0, 0));
+    this->model->GetJointController()->SetPositionPID(this->rightJoint->GetScopedName(), common::PID(1, 0, 0));
+    // Set distination angle
+    this->model->GetJointController()->SetPositionTarget(this->leftJoint->GetScopedName(), leftTargetAngle); 
+    this->model->GetJointController()->SetPositionTarget(this->rightJoint->GetScopedName(), rightTargetAngle); 
+    // Flush them.
+    this->model->GetJointController()->Update();
+
+```
 
 # 3. Create a teleoperation controller  
 
