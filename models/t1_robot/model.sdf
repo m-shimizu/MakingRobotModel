@@ -6,21 +6,19 @@
         <link name='chassis'>
           <pose>0 0 .1 0 0 0</pose>
 
-<!--        
+       
    <inertial>
-    <pose>0.1259255 0.250 0.0012545 0 0 0</pose>
     <mass>10</mass>
     <inertia>
-      <ixx>5.798e-6</ixx>
-      <ixy>-1.577e5</ixy>
-      <ixz>-5.188e4</ixz>
-      <iyy>3.72e-6</iyy>
-      <iyz>-1946203007.5e-6</iyz>
-      <izz>6.26978e-6</izz>
+      <ixx>6.6666666e-02</ixx>
+      <ixy>0</ixy>
+      <ixz>0</ixz>
+      <iyy>0.226666666666</iyy>
+      <iyz>0</iyz>
+      <izz>0.26666666666</izz>
     </inertia>
   </inertial>
--->
-          
+
           <collision name='collision'>
             <geometry>
 <!--
@@ -83,6 +81,19 @@
       
       <link name="left_wheel">
         <pose>0.1 0.13 0.1 0 1.5707 1.5707</pose>
+
+  <inertial>
+    <mass>1</mass>
+    <inertia>
+      <ixx>4.25424005174e-03</ixx>
+      <ixy>0</ixy>
+      <ixz>0</ixz>
+      <iyy>4.25424005174e-03</iyy>
+      <iyz>0</iyz>
+      <izz>7.85398163397e-03</izz>
+    </inertia>
+  </inertial>
+
         <collision name="collision">
           <geometry>
             <cylinder>
@@ -103,6 +114,31 @@
 
       <link name="right_wheel">
         <pose>0.1 -0.13 0.1 0 1.5707 1.5707</pose>
+
+  <inertial>
+    <mass>1</mass>
+    <inertia>
+      <ixx>4.25424005174e-03</ixx>
+      <ixy>0</ixy>
+      <ixz>0</ixz>
+      <iyy>4.25424005174e-03</iyy>
+      <iyz>0</iyz>
+      <izz>7.85398163397e-03</izz>
+    </inertia>
+  </inertial>
+
+  <inertial>
+    <mass>1</mass>
+    <inertia>
+      <ixx>4.25424005174e-03</ixx>
+      <ixy>0</ixy>
+      <ixz>0</ixz>
+      <iyy>4.25424005174e-03</iyy>
+      <iyz>0</iyz>
+      <izz>7.85398163397e-03</izz>
+    </inertia>
+  </inertial>
+
         <collision name="collision">
           <geometry>
             <cylinder>

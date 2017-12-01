@@ -59,6 +59,14 @@ void DiffDrivePlugin::Load(physics::ModelPtr _model,
     gzerr << "Unable to find right joint["
           << _sdf->GetElement("right_joint")->Get<std::string>() << "]\n";
 
+  if (!_sdf->HasElement("body_pole"))
+    gzerr << "DiffDrive plugin missing <body_pole> element\n";
+  this->body_pole = _model->GetJoint(
+      _sdf->GetElement("body_pole")->Get<std::string>());
+  if (!this->body_pole)
+    gzerr << "Unable to find body_pole["
+          << _sdf->GetElement("body_pole")->Get<std::string>() << "]\n";
+
   if (!_sdf->HasElement("sholder_joint"))
     gzerr << "DiffDrive plugin missing <sholder_joint> element\n";
   this->sholderJoint = _model->GetJoint(
@@ -152,31 +160,49 @@ int	doslike_getch(void)
 
 void	DiffDrivePlugin::check_key_command(void)
 {
-	static float	left_v = 0, right_v = 0;
+	static float	left_v = 0, right_v = 0, body_pole_angle = 0;
 	if(doslike_kbhit())
 	{
 		int cmd = doslike_getch();
 		switch(cmd)
 		{
 			case 'q': left_v += 0.1;
-                                  left_v = _MIN(left_v, 1);
+                left_v = _MIN(left_v, 1);
 				  break;
 			case 'a': left_v = 0;
 				  break;
 			case 'z': left_v -= 0.1;
-                                  left_v = _MAX(left_v, -1);
+                left_v = _MAX(left_v, -1);
 				  break;
 			case 'e': right_v += 0.1;
-                                  right_v = _MIN(right_v, 1);
+                right_v = _MIN(right_v, 1);
 				  break;
 			case 'd': right_v = 0;
 				  break;
 			case 'c': right_v -= 0.1;
-                                  right_v = _MAX(right_v, -1);
+                right_v = _MAX(right_v, -1);
+				  break;
+			case 'r': body_pole_angle += 0.1;
+                body_pole_angle = _MIN(body_pole_angle, 1);
+				  break;
+			case 'f': body_pole_angle = 0;
+				  break;
+			case 'v': body_pole_angle -= 0.1;
+                body_pole_angle = _MAX(body_pole_angle, -1);
 				  break;
 		}
 		this->leftJoint->SetVelocity(0, left_v);
 		this->rightJoint->SetVelocity(0, right_v);
+    float body_pole_angleP = body_pole_angle - this->body_pole->GetAngle(0).Radian();
+    body_pole_angleP *= 100;
+    // Set nice torque.  
+    this->body_pole->SetForce(0, body_pole_angleP);
+    // Set PID parameters.  
+    this->model->GetJointController()->SetPositionPID(this->body_pole->GetScopedName(), common::PID(1, 0, 0));
+    // Set distination angle
+    this->model->GetJointController()->SetPositionTarget(this->body_pole->GetScopedName(), body_pole_angle); 
+    // Flush them.
+    this->model->GetJointController()->Update();
 	}
 }
 
