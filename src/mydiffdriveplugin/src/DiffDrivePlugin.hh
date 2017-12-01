@@ -41,6 +41,7 @@ namespace gazebo
 
     private: physics::ModelPtr model;
     private: physics::JointPtr leftJoint, rightJoint;
+    private: physics::JointPtr body_pole;
     private: physics::JointPtr sholderJoint;
     private: event::ConnectionPtr updateConnection;
     private: double wheelSpeed[2];
