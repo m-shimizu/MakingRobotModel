@@ -57,7 +57,7 @@ catkin_python_setup()
 #  cfg/Hokuyo.cfg
 #)
 
-include_directories(include
+include_directories(
   ${Boost_INCLUDE_DIRS}
   ${catkin_INCLUDE_DIRS}
   ${GAZEBO_INCLUDE_DIRS}
@@ -85,7 +85,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}")
 #endif()
 
 catkin_package(
-  INCLUDE_DIRS include
+  INCLUDE_DIRS 
   LIBRARIES 
 #  vision_reconfigure 
 #  gazebo_ros_utils 
