@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="world" default="my_arm_robot.world"/>
+  <param name="use_sim_time" value="true"/>
+
+  <!-- Launch robot state publishers -->
+  <include file="$(find my_arm_robot)/launch/make_robot_description_and_call_state_publisher.launch">
+    <arg name="robot_name" value="my_arm_robot"/>
+  </include>
+
+  <!-- Launch gazebo -->
+  <node name="gazebo" pkg="gazebo_ros" type="gzserver" respawn="false" output="screen" args="$(find my_arm_robot)/worlds/$(arg world)"/>
+  <node name="gazebo_gui" pkg="gazebo_ros" type="gzclient" respawn="false" output="screen"/>
+
+</launch>
+
+

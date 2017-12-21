@@ -101,8 +101,8 @@ namespace gazebo {
 
       // ROS STUFF
       boost::mutex lock;
-      ros::Subscriber cmd_arm12_subscriber_;
-      ros::Subscriber cmd_hand12_subscriber_;
+      ros::Subscriber cmd_arm_subscriber_;
+      ros::Subscriber cmd_hand_subscriber_;
 
       std::string robot_namespace_;
       std::string command_topic1_;
@@ -119,8 +119,8 @@ namespace gazebo {
       void QueueThread();
 
       // Callback stuff
-      void cmdarm12_Callback(const geometry_msgs::Twist::ConstPtr& cmd_msg);
-      void cmdhand12_Callback(const geometry_msgs::Twist::ConstPtr& cmd_msg);
+      void cmdarm_Callback(const geometry_msgs::Twist::ConstPtr& cmd_msg);
+      void cmdhand_Callback(const geometry_msgs::Twist::ConstPtr& cmd_msg);
 
       bool alive_;
 

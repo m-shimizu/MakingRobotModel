@@ -91,8 +91,8 @@ void GazeboRosMyArm::Load ( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
   // Make sure the ROS node for Gazebo has already been initialized
   gazebo_ros_->isInitialized();
 
-  gazebo_ros_->getParameter<std::string> ( command_topic1_, "commandTopic1", "cmd_arm12" );
-  gazebo_ros_->getParameter<std::string> ( command_topic2_, "commandTopic2", "cmd_hand12" );
+  gazebo_ros_->getParameter<std::string> ( command_topic1_, "commandTopic1", "cmd_arm" );
+  gazebo_ros_->getParameter<std::string> ( command_topic2_, "commandTopic2", "cmd_hand" );
 
 
 /*
@@ -130,17 +130,17 @@ void GazeboRosMyArm::Load ( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
   ROS_INFO("%s: Try to subscribe to %s!", gazebo_ros_->info(), command_topic1_.c_str());
   ros::SubscribeOptions so1 =
     ros::SubscribeOptions::create<geometry_msgs::Twist>(command_topic1_, 1,
-        boost::bind(&GazeboRosMyArm::cmdarm12_Callback, this, _1),
+        boost::bind(&GazeboRosMyArm::cmdarm_Callback, this, _1),
         ros::VoidPtr(), &queue_);
-  cmd_arm12_subscriber_ = gazebo_ros_->node()->subscribe(so1); // DO NOT REMOVE "cmd_arm12_subscriber_ = "
+  cmd_arm_subscriber_ = gazebo_ros_->node()->subscribe(so1); // DO NOT REMOVE "cmd_arm_subscriber_ = "
   ROS_INFO("%s: Subscribe to %s!", gazebo_ros_->info(), command_topic1_.c_str());
 
   ROS_INFO("%s: Try to subscribe to %s!", gazebo_ros_->info(), command_topic2_.c_str());
   ros::SubscribeOptions so2 =
     ros::SubscribeOptions::create<geometry_msgs::Twist>(command_topic2_, 1,
-        boost::bind(&GazeboRosMyArm::cmdhand12_Callback, this, _1),
+        boost::bind(&GazeboRosMyArm::cmdhand_Callback, this, _1),
         ros::VoidPtr(), &queue_);
-  cmd_hand12_subscriber_ = gazebo_ros_->node()->subscribe(so2); // DO NOT REMOVE "cmd_hand12_subscriber_ = "
+  cmd_hand_subscriber_ = gazebo_ros_->node()->subscribe(so2); // DO NOT REMOVE "cmd_hand_subscriber_ = "
   ROS_INFO("%s: Subscribe to %s!", gazebo_ros_->info(), command_topic2_.c_str());
 
   // start custom queue for diff drive
@@ -153,7 +153,7 @@ void GazeboRosMyArm::Load ( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
   printf("\n#####################################################\n");
   printf("#####################################################\n");
   printf("Type the following command in another terminal.\n");
-  printf("rostopic pub -r 10 /my_arm_robot/cmd_arm12 geometry_msgs/Twist  '{linear:  {x: 0.1, y: 0.0, z: 0.0}, angular: {x: 0.0,y: 0.0,z: 0.0}}'\n");
+  printf("rostopic pub -r 10 /my_arm_robot/cmd_arm geometry_msgs/Twist  '{linear:  {x: 0.1, y: 0.0, z: 0.0}, angular: {x: 0.0,y: 0.0,z: 0.0}}'\n");
   printf("#####################################################\n");
   printf("#####################################################\n");
 
@@ -173,12 +173,13 @@ void GazeboRosMyArm::PID_Control(void)
   // printf("Monitor Angle[%d] : %f\n", i, this->joints_[i]->GetAngle(0).Degree());
 
   // Only Proportional Control in velocity
-    orders_[i] = -1 * (Monitor_Angles_[i] - Target_Angles_[i]);
-
-    this->parent->GetJointController()->SetVelocityPID(
+    orders_[i] = Target_Angles_[i] - Monitor_Angles_[i];
+    this->joints_[i]->SetForce(0, orders_[i] * 25);
+    this->parent->GetJointController()->SetPositionPID(
         this->joints_[i]->GetScopedName(), common::PID(0.1, 0, 0));
-
-    this->joints_[i]->SetVelocity(0, orders_[i]);
+    this->parent->GetJointController()->SetPositionTarget(
+        this->joints_[i]->GetScopedName(), Target_Angles_[i]);
+    //this->joints_[i]->SetVelocity(0, orders_[i]);
   }
 }
 
@@ -264,7 +265,7 @@ void GazeboRosMyArm::FiniChild()
   callback_queue_thread_.join();
 }
 
-void GazeboRosMyArm::cmdarm12_Callback ( const geometry_msgs::Twist::ConstPtr& cmd_msg )
+void GazeboRosMyArm::cmdarm_Callback ( const geometry_msgs::Twist::ConstPtr& cmd_msg )
 {
   Target_Angles_[SHOULDERYAW]   = cmd_msg->linear.x;
   Target_Angles_[SHOULDERPITCH] = cmd_msg->linear.y;
@@ -273,15 +274,15 @@ void GazeboRosMyArm::cmdarm12_Callback ( const geometry_msgs::Twist::ConstPtr& c
   Target_Angles_[FINGER12]      = cmd_msg->angular.y;
   Target_Angles_[FINGER22]      = cmd_msg->angular.z;
 /*
-  printf("cmdarm12 : x,y,z,r,p,y=%4.2f,%4.2f,%4.2f,%4.2f,%4.2f,%4.2f\n"
+  printf("cmdarm : x,y,z,r,p,y=%4.2f,%4.2f,%4.2f,%4.2f,%4.2f,%4.2f\n"
             , cmd_msg->linear.x, cmd_msg->linear.y, cmd_msg->linear.z,
               cmd_msg->angular.x, cmd_msg->angular.y, cmd_msg->angular.z);
 */
 }
 
-void GazeboRosMyArm::cmdhand12_Callback ( const geometry_msgs::Twist::ConstPtr& cmd_msg )
+void GazeboRosMyArm::cmdhand_Callback ( const geometry_msgs::Twist::ConstPtr& cmd_msg )
 {
-  printf("cmdhand12 : x,y,z,r,p,y=%4.2f,%4.2f,%4.2f,%4.2f,%4.2f,%4.2f\n"
+  printf("cmdhand : x,y,z,r,p,y=%4.2f,%4.2f,%4.2f,%4.2f,%4.2f,%4.2f\n"
             , cmd_msg->linear.x, cmd_msg->linear.y, cmd_msg->linear.z,
               cmd_msg->angular.x, cmd_msg->angular.y, cmd_msg->angular.z);
 }
