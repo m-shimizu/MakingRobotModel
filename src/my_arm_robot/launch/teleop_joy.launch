@@ -1,0 +1,25 @@
+<launch>
+
+  <arg name="robot_name" default="my_arm_robot"/>
+
+  <node respawn="true" pkg="joy"
+                 type="joy_node" name="joy_node_$(arg robot_name)">
+    <param name="dev" type="string" value="/dev/input/js0" />
+    <param name="deadzone" value="0.12" />
+    <remap from="joy" to="joy_$(arg robot_name)"/>
+  </node>
+
+  <param name="axis_linear" value="1" type="int"/>
+  <param name="axis_angular" value="0" type="int"/>
+  <param name="scale_linear" value="0.7" type="double"/>
+  <param name="scale_angular" value="0.9" type="double"/>
+  <param name="scale_arm" value="1" type="double"/>
+  <param name="scale_hand" value="1" type="double"/>
+  <param name="cmd_vel" value="/$(arg robot_name)/cmd_vel" type="string"/>
+  <param name="cmd_arm" value="/$(arg robot_name)/cmd_arm" type="string"/>
+  <param name="cmd_hand" value="/$(arg robot_name)/cmd_hand" type="string"/>
+  <param name="joy" value="/joy_$(arg robot_name)" type="string"/>
+  <node pkg="teleop_joy" type="teleop_joy" 
+                                     name="teleop_joy_$(arg robot_name)"/>
+
+</launch>
