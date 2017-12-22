@@ -157,9 +157,24 @@ __PREPARE A ARM MODEL USING following codes__
 # 3. Create a teleoperation controller  
 
 ## 3-1. CMakeLists.txt  
+Maybe you want a robot controller to be an executable file.  
+Then you should add following 2 lines at the end of CMakeLists.txt.  
+
+
+```
+add_executable(teleop_joy src/teleop_joy.cpp)
+target_link_libraries(teleop_joy ${catkin_LIBRARIES})
+```
 
 ## 3-2. cpp file and header file  
+WRITE HERE LATER.
 
 ## 3-3. build  
+To build the robot controller, only you have to do is catkin_make.  
 
 ## 3-4. Using the teleoperation controller   
+Your robot controller was made as a part of a ROS package.  
+Then you can execute it by using following ros command.  
+
+    $ roslaunch my_arm_robot 
+

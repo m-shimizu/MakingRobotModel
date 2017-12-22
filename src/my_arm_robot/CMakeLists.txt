@@ -25,6 +25,7 @@ find_package(catkin REQUIRED COMPONENTS
   diagnostic_updater
   camera_info_manager
   std_msgs
+  joy
 )
 
 include (FindPkgConfig)
@@ -163,3 +164,8 @@ catkin_package(
 
 add_library(my_arm src/my_arm.cpp)
 target_link_libraries(my_arm ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+
+add_executable(teleop_joy src/teleop_joy.cpp)
+target_link_libraries(teleop_joy ${catkin_LIBRARIES})
+
+
