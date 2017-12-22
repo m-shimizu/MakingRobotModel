@@ -160,14 +160,21 @@ __PREPARE A ARM MODEL USING following codes__
 Maybe you want a robot controller to be an executable file.  
 Then you should add following 2 lines at the end of CMakeLists.txt.  
 
-
 ```
 add_executable(teleop_joy src/teleop_joy.cpp)
 target_link_libraries(teleop_joy ${catkin_LIBRARIES})
 ```
 
 ## 3-2. cpp file and header file  
-WRITE HERE LATER.
+In this study, the robot controller program is,  
+
+    ~/MakingRobotModel/src/my_arm_robot/src/teleop_joy.cpp  
+
+This source file includes an interface to use a joystick.  
+For getting joystick information, another package named 'joy' is required.  
+The package joy reads a joystick status and outputs a topic named '/joy'.  
+This robot controller program is a translator between topic '/joy' and topic '/my_arm_robot/cmd_arm' and topic '/my_arm_robot/cmd_hand'.   
+A plugin included by my_arm_robot reads topic '/my_arm_robot/cmd_arm' and '/my_arm_robot/cmd_hand' to get his joint's target angle.  
 
 ## 3-3. build  
 To build the robot controller, only you have to do is catkin_make.  
@@ -176,5 +183,13 @@ To build the robot controller, only you have to do is catkin_make.
 Your robot controller was made as a part of a ROS package.  
 Then you can execute it by using following ros command.  
 
-    $ roslaunch my_arm_robot 
+    __TERMINAL1__  
+    $ cd ~/MakingRobotModel  
+    $ source setup.bash  
+    $ roslaunch my_arm_robot empty.launch  
+
+    __TERMINAL2__  
+    $ cd ~/MakingRobotModel  
+    $ source setup.bash  
+    $ roslaunch my_arm_robot teleop_joy.launch  
 
