@@ -176,7 +176,7 @@ void GazeboRosMyArm::PID_Control(void)
     orders_[i] = Target_Angles_[i] - Monitor_Angles_[i];
     this->joints_[i]->SetForce(0, orders_[i] * 25);
     this->parent->GetJointController()->SetPositionPID(
-        this->joints_[i]->GetScopedName(), common::PID(0.1, 0, 0));
+        this->joints_[i]->GetScopedName(), common::PID(0.09, 0.0333, 0));
     this->parent->GetJointController()->SetPositionTarget(
         this->joints_[i]->GetScopedName(), Target_Angles_[i]);
     //this->joints_[i]->SetVelocity(0, orders_[i]);

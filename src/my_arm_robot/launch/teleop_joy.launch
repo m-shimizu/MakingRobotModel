@@ -19,7 +19,7 @@
   <param name="cmd_arm" value="/$(arg robot_name)/cmd_arm" type="string"/>
   <param name="cmd_hand" value="/$(arg robot_name)/cmd_hand" type="string"/>
   <param name="joy" value="/joy_$(arg robot_name)" type="string"/>
-  <node pkg="teleop_joy" type="teleop_joy" 
+  <node pkg="my_arm_robot" type="teleop_joy" 
                                      name="teleop_joy_$(arg robot_name)"/>
 
 </launch>

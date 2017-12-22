@@ -33,7 +33,6 @@ TeleopJoy::TeleopJoy():
   _nh.param("cmd_vel", _tpc_cmd_vel, std::string("/cmd_vel"));
   _nh.param("cmd_arm", _tpc_cmd_arm, std::string("/cmd_arm"));
   _nh.param("cmd_hand", _tpc_cmd_hand, std::string("/cmd_hand"));
-  _nh.param("cmd_hand", _tpc_cmd_hand, std::string("/cmd_hand"));
   _nh.param("joy", _tpc_joy, std::string("/joy"));
   vel_pub = _nh.advertise<geometry_msgs::Twist>(_tpc_cmd_vel.c_str(), 1);
   arm_pub   = _nh.advertise<geometry_msgs::Twist>(_tpc_cmd_arm.c_str(), 1);
