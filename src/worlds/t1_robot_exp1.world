@@ -29,5 +29,9 @@
       <pose>0 0 0 0 0 0</pose>
       <uri>model://t1_robot</uri>
     </include>
+    <gui fullscreen='0'>
+      <!-- KEYPUBLISHER SEE: https://github.com/osrf/car_demo/issues/25 -->
+      <plugin name='keyboard' filename='libKeyboardGUIPlugin.so'/>
+    </gui>
   </world>
 </sdf>

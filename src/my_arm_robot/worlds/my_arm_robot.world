@@ -2,6 +2,8 @@
 <sdf version="1.5">
   <world name="default">
     <gui fullscreen='0'>
+      <!-- KEYPUBLISHER SEE: https://github.com/osrf/car_demo/issues/25 -->
+      <plugin name='keyboard' filename='libKeyboardGUIPlugin.so'/>
       <camera name='user_camera'>
         <pose frame=''>0.409475 -0.502666 0.529673 0 0.275643 2.35619</pose>
         <view_controller>orbit</view_controller>

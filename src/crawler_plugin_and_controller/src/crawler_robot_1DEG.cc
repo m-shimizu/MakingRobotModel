@@ -101,7 +101,12 @@ class MobileBasePlugin : public ModelPlugin
     // physics::WorldPtr world = physics::get_world("default");
     this->model = _model;
     this->node = transport::NodePtr(new transport::Node());
+#if(GAZEBO_MAJOR_VERSION <= 7)
     this->node->Init(this->model->GetWorld()->GetName());
+#endif
+#if(GAZEBO_MAJOR_VERSION >= 8)
+    this->node->Init(this->model->GetWorld()->Name());
+#endif
     if(this->LoadParams(_sdf))
     {
       this->velSub = this->node->Subscribe(
@@ -174,7 +179,7 @@ class MobileBasePlugin : public ModelPlugin
     double vel_rot = -1 * msgs::Convert(_msg->orientation()).GetAsEuler().z
                      * (this->wheelSeparation / this->wheelRadius);
 #endif
-#if(GAZEBO_MAJOR_VERSION == 7)
+#if(GAZEBO_MAJOR_VERSION >= 7)
     double vel_rot = -1 * msgs::ConvertIgn(_msg->orientation()).Euler().Z()
                      * (this->wheelSeparation / this->wheelRadius);
 #endif
