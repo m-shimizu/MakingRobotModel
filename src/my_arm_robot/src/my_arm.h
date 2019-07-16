@@ -105,6 +105,7 @@ namespace gazebo {
       ros::Subscriber cmd_hand_subscriber_;
 
       std::string robot_namespace_;
+      std::string command_topic0_;
       std::string command_topic1_;
       std::string command_topic2_;
 
@@ -119,6 +120,7 @@ namespace gazebo {
       void QueueThread();
 
       // Callback stuff
+      void OnCmdVel(const geometry_msgs::Twist::ConstPtr& cmd_msg);
       void cmdarm_Callback(const geometry_msgs::Twist::ConstPtr& cmd_msg);
       void cmdhand_Callback(const geometry_msgs::Twist::ConstPtr& cmd_msg);
 
@@ -128,6 +130,10 @@ namespace gazebo {
       double update_rate_;
       double update_period_;
       common::Time last_update_time_;
+      
+      physics::JointPtr  leftJoint, rightJoint;
+      float	wheelSpeed[2];
+      float wheelRadius, wheelSeparation;
             
     // Flags
 

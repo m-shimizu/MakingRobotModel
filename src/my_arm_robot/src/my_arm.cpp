@@ -67,12 +67,30 @@ enum {
 
 #include <ros/ros.h>
 
+enum {RIGHT, LEFT};
+
 namespace gazebo
 {
 
 
 GazeboRosMyArm::GazeboRosMyArm() 
 {
+  this->wheelSpeed[LEFT] = this->wheelSpeed[RIGHT] = 0;
+  this->wheelSeparation = this->leftJoint->GetAnchor(0).Distance(
+      this->rightJoint->GetAnchor(0));
+
+  physics::EntityPtr parent = boost::dynamic_pointer_cast<physics::Entity>(
+      this->leftJoint->GetChild());
+
+  math::Box bb = parent->GetBoundingBox();
+  // This assumes that the largest dimension of the wheel is the diameter
+#if(GAZEBO_MAJOR_VERSION <= 7)
+  this->wheelRadius = bb.GetSize().GetMax() * 0.5;
+#endif
+#if(GAZEBO_MAJOR_VERSION >= 8)
+  this->wheelRadius = bb.GetSize().Ign().Max() * 0.5;
+#endif
+
   for(int i = 0; i < JOINT_SIZE; i++)
   {
     Target_Angles_[i] = 0;
@@ -91,6 +109,7 @@ void GazeboRosMyArm::Load ( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
   // Make sure the ROS node for Gazebo has already been initialized
   gazebo_ros_->isInitialized();
 
+  gazebo_ros_->getParameter<std::string> ( command_topic0_, "commandTopic0", "cmd_vel" );
   gazebo_ros_->getParameter<std::string> ( command_topic1_, "commandTopic1", "cmd_arm" );
   gazebo_ros_->getParameter<std::string> ( command_topic2_, "commandTopic2", "cmd_hand" );
 
@@ -101,6 +120,22 @@ void GazeboRosMyArm::Load ( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
   gazebo_ros_->getParameter<std::string> ( arm_wrist_frame_,  "ArmWristFrame",  "ArmWristFrame" );
   gazebo_ros_->getParameter<std::string> ( arm_finger_frame_,   "ArmFingerFrame",   "ArmFingerFrame" );
 */
+
+  if (!_sdf->HasElement("left_joint"))
+    gzerr << "DiffDrive plugin missing <left_joint> element\n";
+  this->leftJoint = _parent->GetJoint(
+      _sdf->GetElement("left_joint")->Get<std::string>());
+  if (!this->leftJoint)
+    gzerr << "Unable to find left joint["
+          << _sdf->GetElement("left_joint")->Get<std::string>() << "]\n";
+
+  if (!_sdf->HasElement("right_joint"))
+    gzerr << "DiffDrive plugin missing <right_joint> element\n";
+  this->rightJoint = _parent->GetJoint(
+      _sdf->GetElement("right_joint")->Get<std::string>());
+  if (!this->rightJoint)
+    gzerr << "Unable to find right joint["
+          << _sdf->GetElement("right_joint")->Get<std::string>() << "]\n";
 
   joints_.resize ( JOINT_SIZE );
   joints_[SHOULDERYAW]  = gazebo_ros_->getJoint ( parent, "shoulderYawJoint", "shoulderYaw_joint" );
@@ -127,6 +162,14 @@ void GazeboRosMyArm::Load ( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
   alive_ = true;
 
   // ROS: Subscribe to the velocity command topic (usually "cmd_vel")
+  ROS_INFO("%s: Try to subscribe to %s!", gazebo_ros_->info(), command_topic1_.c_str());
+  ros::SubscribeOptions so0 =
+    ros::SubscribeOptions::create<geometry_msgs::Twist>(command_topic0_, 1,
+        boost::bind(&GazeboRosMyArm::OnCmdVel, this, _1),
+        ros::VoidPtr(), &queue_);
+  cmd_arm_subscriber_ = gazebo_ros_->node()->subscribe(so0); // DO NOT REMOVE "cmd_arm_subscriber_ = "
+  ROS_INFO("%s: Subscribe to %s!", gazebo_ros_->info(), command_topic0_.c_str());
+
   ROS_INFO("%s: Try to subscribe to %s!", gazebo_ros_->info(), command_topic1_.c_str());
   ros::SubscribeOptions so1 =
     ros::SubscribeOptions::create<geometry_msgs::Twist>(command_topic1_, 1,
@@ -157,6 +200,23 @@ void GazeboRosMyArm::Load ( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
   printf("#####################################################\n");
   printf("#####################################################\n");
 
+}
+
+void GazeboRosMyArm::OnCmdVel( const geometry_msgs::Twist::ConstPtr& _msg )
+{
+  double vr, va;
+
+  vr = _msg->linear.x;
+  va = _msg->angular.z;
+
+  this->wheelSpeed[LEFT] = vr + va * this->wheelSeparation / 2.0;
+  this->wheelSpeed[RIGHT] = vr - va * this->wheelSeparation / 2.0;
+
+  double leftVelDesired = (this->wheelSpeed[LEFT] / this->wheelRadius);
+  double rightVelDesired = (this->wheelSpeed[RIGHT] / this->wheelRadius);
+
+  this->leftJoint->SetVelocity(0, leftVelDesired);
+  this->rightJoint->SetVelocity(0, rightVelDesired);
 }
 
 void GazeboRosMyArm::Reset()
